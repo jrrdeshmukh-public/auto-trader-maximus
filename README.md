@@ -1,6 +1,6 @@
 # 🔢 AutoTrader - Application Flow
 
-This document outlines the **logical flow** and **user-driven interactions** inside the **AutoTrader Crypto Trading Bot**.
+This document outlines the **logical flow** and **user-driven interactions** inside the **AutoTrader Trading Bot**.
 
 ---
 
@@ -8,11 +8,11 @@ This document outlines the **logical flow** and **user-driven interactions** ins
 
 When the application first loads:
 
-- **Initialize Ably Realtime Client**:
+- **Initialize Ably Realtime Client**: 
   - Connects to Ably for streaming price updates, actions, and position changes.
 
-- **Fetch Historical Crypto Data**:
-  - Pulls 7 days of Bitcoin price history from CoinGecko.
+- **Fetch Historical Market Data**:
+  - Pulls 7 days of historical price data from external sources.
   - Used to compute trading indicators and thresholds.
 
 - **Generate Initial Trading Rules**:
@@ -25,7 +25,7 @@ When the application first loads:
 When the user initiates live trading:
 
 - Every **5 seconds**:
-  - **Fetch Live Price**: Pull current Bitcoin price.
+  - **Fetch Live Price**: Pull current asset price.
   - **Update Trading State**: Update variables like price, fair price.
   - **Evaluate All Rules**:
     - For each rule, check if the condition is satisfied.
@@ -41,7 +41,7 @@ When the user initiates live trading:
 
 When the user requests to optimize strategies:
 
-- **Fetch Latest Historical Data** for crypto prices.
+- **Fetch Latest Historical Data** for asset prices.
 - **Fetch Previous Rule Sets** from the database.
 - **Generate New Candidate Rule Sets**:
   - Create multiple random rule sets.
@@ -82,7 +82,47 @@ The app stays synced with real-time changes:
 
 ---
 
-> This flow ensures that AutoTrader continuously adapts, learns, and simulates intelligent crypto trading in real-time with dynamic rule generation and live market execution.
+# 👁️ Case-Based Reasoning (CBR) in AutoTrader
+
+AutoTrader employs a **case-based reasoning** (CBR) framework to evolve its trading strategies over time. 
+Rather than predefining a fixed model, the system **generates rules**, **tests them**, and **learns by comparing outcomes**, similar to how a human trader would analyze historical trades and adjust.
+
+### How CBR Works in This System:
+
+- **Historical Data as Cases**:
+  - Uses 7 days of historical price data as "past experiences."
+
+- **Dynamic Rule Generation**:
+  - Randomly creates hypotheses about trading conditions using indicators, thresholds, and z-scores.
+
+- **Simulate and Evaluate**:
+  - Applies each rule set over historical cases to simulate trades.
+
+- **Score and Select**:
+  - Evaluates rules based on portfolio performance, Sharpe ratio, drawdown, and cross-entropy.
+
+- **Learn and Adapt**:
+  - Selects the best rule set and updates the live trading logic.
+
+---
+
+# 📈 Generate-and-Test Cycle
+
+The **Generate and Test** process is AutoTrader's core evolutionary engine:
+
+| Phase         | What Happens |
+|:--------------|:-------------|
+| **Generate**  | Randomly create new candidate rules. |
+| **Simulate**  | Apply rule sets to historical data and simulate trades. |
+| **Score**     | Calculate performance metrics. |
+| **Select**    | Choose the best-performing rule set. |
+| **Save**      | Store the best rule set and apply it in live trading. |
+
+✅ This cycle repeats **whenever "Generate & Test" is clicked**, helping AutoTrader continuously adapt and optimize.
+
+---
+
+> This flow ensures that AutoTrader continuously adapts, learns, and simulates intelligent trading in real-time with dynamic rule generation and live market execution.
 
 ---
 
