@@ -1,10 +1,10 @@
-# 🔢 AutoTrader - Application Flow
+# AutoTrader - Application Flow
 
 This document outlines the **logical flow** and **user-driven interactions** inside the **AutoTrader Trading Bot**.
 
 ---
 
-## 🌐 System Startup
+## System Startup
 
 When the application first loads:
 
@@ -20,7 +20,7 @@ When the application first loads:
 
 ---
 
-## 📈 User Clicks "Start Trading"
+## User Clicks "Start Trading"
 
 When the user initiates live trading:
 
@@ -37,7 +37,7 @@ When the user initiates live trading:
 
 ---
 
-## 🔄 User Clicks "Generate & Test"
+## User Clicks "Generate & Test"
 
 When the user requests to optimize strategies:
 
@@ -56,7 +56,7 @@ When the user requests to optimize strategies:
 
 ---
 
-## 📲 Receiving Live Updates (Ably Streams)
+## Receiving Live Updates (Ably Streams)
 
 The app stays synced with real-time changes:
 
@@ -71,7 +71,38 @@ The app stays synced with real-time changes:
 
 ---
 
-## 📆 Quick Summary
+## Detailed Step-by-Step Flow
+
+```
+STARTUP
+  - Initialize Ably client
+  - Fetch historical market data
+  - Create initial rules
+
+USER CLICKS "START TRADING"
+  - Every 5s: Fetch live price
+    - Update trading state
+    - Evaluate all rules
+      - If rule satisfied → Execute BUY/SELL
+    - Update cash, position, wealth
+    - Publish updates to Ably channels
+
+USER CLICKS "GENERATE & TEST"
+  - Fetch historical data
+  - Fetch old rules from DB
+  - Generate new candidate rules
+  - Backtest all rule sets
+  - Select and save the best rule set
+  - Update the app's rules
+
+RECEIVE LIVE UPDATES (Ably)
+  - Update trading logs
+  - Update position logs
+```
+
+---
+
+## Quick Summary
 
 | Flow Stage          | Main Actions |
 |:--------------------|:-------------|
@@ -82,7 +113,7 @@ The app stays synced with real-time changes:
 
 ---
 
-# 👁️ Case-Based Reasoning (CBR) in AutoTrader
+# Case-Based Reasoning (CBR) in AutoTrader
 
 AutoTrader employs a **case-based reasoning** (CBR) framework to evolve its trading strategies over time. 
 Rather than predefining a fixed model, the system **generates rules**, **tests them**, and **learns by comparing outcomes**, similar to how a human trader would analyze historical trades and adjust.
@@ -106,7 +137,7 @@ Rather than predefining a fixed model, the system **generates rules**, **tests t
 
 ---
 
-# 📈 Generate-and-Test Cycle
+# Generate-and-Test Cycle
 
 The **Generate and Test** process is AutoTrader's core evolutionary engine:
 
@@ -126,5 +157,5 @@ The **Generate and Test** process is AutoTrader's core evolutionary engine:
 
 ---
 
-💡 **Tip**: This structure also supports future extension into multi-asset trading, broker API integration, and reinforcement learning for smarter rule evolution!
+**Tip**: This structure also supports future extension into multi-asset trading, broker API integration, and reinforcement learning for smarter rule evolution!
 
